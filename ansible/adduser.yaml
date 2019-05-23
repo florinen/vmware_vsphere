@@ -1,0 +1,21 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+  gather_facts: false
+  #remote_user: root
+  tasks:
+    - name: Add the user 'centos' with a bash shell
+      user:
+        name: centos
+        comment: centos
+        shell: /bin/bash
+        password: centos
+        #groups: 
+        append: yes
+      register: new_user
+    - name: Set authorized key took from root user
+      authorized_key:
+        user: centos
+        state: absent
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+        manage_dir: yes

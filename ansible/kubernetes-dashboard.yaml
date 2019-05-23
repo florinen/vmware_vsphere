@@ -1,0 +1,36 @@
+# Adding Kubernetes dashboard  
+- hosts: master
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Downloading Kubernetes dashboard
+      get_url:
+        url: https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
+        dest: /root/kubernetes-dashboard.yaml
+        force: yes
+
+    - name: Setting up dashboard public IP
+      lineinfile:
+        path: /root/kubernetes-dashboard.yaml
+        line: "  externalIPs:\n    - {{ hostvars['t-master']['ansible_default_ipv4']['address'] }}"
+
+    - name: Install Kubernetes dashboard
+      shell: "kubectl apply -f /root/kubernetes-dashboard.yaml &>> dashbaord_setup.log"
+
+    - name: Create a ServiceAccount
+      shell: kubectl create serviceaccount cluster-admin-dashboard-sa
+      args:
+        chdir: $HOME/.kube/
+        creates: admin_token
+
+    - name: Create admin role
+      shell: kubectl create clusterrolebinding cluster-admin-dashboard-sa --clusterrole=cluster-admin   --serviceaccount=default:cluster-admin-dashboard-sa 
+      args:
+        chdir: $HOME/.kube/
+        creates: admin_token
+
+    - name: Log admin token
+      shell: "kubectl describe secret $( kubectl get secrets | grep cluster-admin-dashboard-sa | awk '{print $1}' ) &>> $HOME/.kube/admin_token"
+      args:
+        chdir: $HOME/.kube/
+        creates: admin_token

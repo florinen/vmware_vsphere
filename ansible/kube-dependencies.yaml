@@ -1,0 +1,176 @@
+- hosts: all
+  become: yes
+  #become_method: sudo
+  tasks:
+    - name: Installing useful packages
+      yum:
+        name: "{{ packages }}"
+        state: latest
+      vars:
+        packages:
+        - vim
+        - wget
+        - device-mapper-persistent-data
+        - lvm2
+        - yum-utils
+        - git
+
+    - name: disable SELinux
+      command: setenforce 0
+      ignore_errors: true
+     
+    - name: disable SELinux on reboot
+      selinux:
+        state: disabled
+      ignore_errors: true
+       
+    - name: Stop and disable firewalld. # Conflicts with iptables
+      service:
+        name: firewalld
+        state: stopped
+        enabled: False
+      ignore_errors: true
+
+## Disable swap
+    - name: swap - disable swap
+      command: swapoff --all
+      ignore_errors: yes
+      become: yes
+    - name: Comment out swap line in fstab
+      replace:
+        path: /etc/fstab
+        regexp: '(.*centos-swap.*)'
+        replace: '#\1'
+
+    - name: Rebooting ...
+      shell: "sleep 3 && reboot"
+      async: 1
+      poll: 0
+      register: rebooting
+      ignore_errors: true
+
+    - name: Wait for rebooted servers to come back
+      reboot:
+        reboot_timeout: 300
+      register: results
+    - debug: var=results.changed 
+
+    - name: add dns records in hosts file
+      blockinfile:
+        path: /etc/hosts
+        block: |
+          k8s-master-0  10.10.40.15
+          k8s-worker-0  10.10.40.16
+          k8s-worker-1  10.10.40.17
+
+    - name: Add Docker repository
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+        mode: 0644
+    - name: Install Docker-CE
+      yum:
+        name: docker-ce
+        state: present
+        update_cache: true
+
+    - name: Start and enable docker
+      service:
+        name: docker
+        state: started
+        enabled: True
+
+    - name: Copy daemon file 
+      copy:
+        src: ~/kube_cluster/daemon.json
+        dest: /etc/docker
+       
+    - name: Create directory for docker services systemd
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - /etc/systemd/system/docker.service.d
+      
+    - name: restart daemon and docker
+      systemd:
+        daemon_reload: yes
+        name: docker
+        state: restarted
+
+    - name: add Kubernetes YUM repository
+      yum_repository:
+        name: Kubernetes
+        description: Kubernetes YUM repository
+        baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+        gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+        gpgcheck: yes
+
+    - name: install kubelet
+      yum:
+        name: kubelet-1.14.0
+        state: present
+        update_cache: true
+
+    - name: install kubeadm
+      yum:
+        name: kubeadm-1.14.0
+        state: present
+
+    - name: start kubelet
+      service:
+        name: kubelet
+        enabled: yes
+        state: started
+
+    - name: ensure net.bridge.bridge-nf-call-ip6tables is set to 1
+      sysctl:
+        name: net.bridge.bridge-nf-call-ip6tables
+        value: 1
+        state: present
+
+    - name: ensure net.bridge.bridge-nf-call-iptables is set to 1
+      sysctl:
+        name: net.bridge.bridge-nf-call-iptables
+        value: 1
+        state: present
+ 
+- hosts: master
+  become: yes
+  tasks:
+    - name: install kubectl
+      yum:
+        name: kubectl-1.14.0
+        state: present
+        allow_downgrade: yes
+
+## Mounting NFS shares on workers 
+- hosts: workers
+  become: yes
+  tasks:
+    - name: Install NFS utilities
+      package:
+        name: nfs-utils
+        state: present
+        update_cache: true
+    - name: Create directory for docker services systemd
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0777
+      with_items:
+        - /nfs/shares
+    - name: Mount NFS shares on workers
+      mount:
+        path: /nfs/shares
+        src: freenas.varu.local:/mnt/Storage/kube-apps
+        fstype: nfs
+        opts: rw,sync,hard,intr
+        state: mounted
+        backup: true
+    - name: Activating mount point   
+      command: mount -a
+      args:
+        warn: false
+      become: yes
