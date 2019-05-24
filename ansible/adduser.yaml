@@ -9,7 +9,7 @@
         name: centos
         comment: centos
         shell: /bin/bash
-        password: centos
+        #password: centos
         #groups: 
         append: yes
       register: new_user
