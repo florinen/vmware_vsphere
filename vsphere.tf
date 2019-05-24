@@ -115,7 +115,6 @@ resource "vsphere_virtual_machine" "master" {
     destination = "/root/.ssh/authorized_keys"
   }
 }
-  
 
 # Create anti affinity rule for the Kubernetes master VMs #
 resource "vsphere_compute_cluster_vm_anti_affinity_rule" "master_anti_affinity_rule" {
