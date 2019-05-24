@@ -154,10 +154,6 @@ variable "vm_domain" {
   description = "Domain for the Kubernetes nodes"
 }
 
-variable "k8s_network_plugin" {
-  description = "Kubernetes network plugin (calico/canal/flannel/weave/cilium/contiv/kube-router)"
-  default = "flannel"
-}
 
 variable "vm_master_cpu" {
   description = "Number of vCPU for the Kubernetes master virtual machines"
