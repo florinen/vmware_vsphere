@@ -3,10 +3,10 @@
 # Execute terraform apply to create the bucket
 pushd aws_bucket
 terraform init
-terraform apply --auto-approve -var-file=../config/data/terraform.tfvars
+terraform apply --auto-approve -var-file=../../config/data/vsphere.tfvars
 popd
 terraform init 
-terraform apply --auto-approve -var-file=config/data/terraform.tfvars
+terraform apply --auto-approve -var-file=../config/data/vsphere.tfvars
 
 # Executing ansible playbooks to install kubernetes cluster
 pushd ansible
