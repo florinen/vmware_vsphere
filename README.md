@@ -17,31 +17,30 @@ After creation is finished, login and do the following:
 1) Add user that terraform will use to create infrastructure
 2) Create a role to view the profile-driven storage
 3) Create a role to manage the Kubernetes nodes virtual machines
-   role name: manage-node-vms
-   -resources 
-         -assign virtual machine to resource pool
-   -Virtual Machine
-         -configuration
-		        -add existing disk
-				-add new disk
-				-add or remove device
-				-remove disk
-		 -inventory
-		        -create
-				-remove
+   - role name: manage-node-vms
+   - resources 
+         - assign virtual machine to resource pool
+   - Virtual Machine
+         - configuration
+		        - add existing disk
+				- add new disk
+				- add or remove device
+				- remove disk
+		 - inventory
+		        - create
+				- remove
 4) Create a new role to manage the Kubernetes volumes.
-   role name: manage-kube-volumes
-         -datastore
-		        -allocate space
-				-low level file operation
+   - role name: manage-kube-volumes
+         - datastore
+		        - allocate space
+				- low level file operation
 
 ## Assign permission to the vSphere Cloud Provider user that we created:
 
 1) Add the read-only permission at the datacenter level. Remove the propagation of the permission
 2) Add the profile-driven storage view at the vCenter level. Remove the propagation of the permission.
-3) Add the manage node permission at the cluster level. This cluster is the cluster where the Kubernetes nodes will be deployed. 
-Keep the propagation of the permission
-4- Add the manage volumes permission at the datastore level. This datastore will be the datastore where the Kubernetes volumes will be created. 
+3) Add the manage node permission at the cluster level. This cluster is the cluster where the Kubernetes nodes will be deployed. Keep the propagation of the permission
+4) Add the manage volumes permission at the datastore level. This datastore will be the datastore where the Kubernetes volumes will be created. 
 Remove the propagation of the permission. Could be done at the cluster datastore level if one exists
 
 Create a directory for the vSphere Cloud Provider, This folder will store the virtual disks created by the vSphere Cloud Provider. (optionally) 
