@@ -1,0 +1,13 @@
+- hosts: master
+  become: yes
+  #become_method: sudo
+  gather_facts: false
+  #remote_user: root
+  tasks:
+    - name: Set authorized key taken from file
+      authorized_key:
+        user: root
+        state: absent
+        key: '{{ item }}'
+      with_file:
+        - /root/vmware/config/data/desktop_pub_key
