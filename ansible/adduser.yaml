@@ -19,3 +19,10 @@
         state: absent
         key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
         manage_dir: yes
+    - name: Set authorized key taken from file
+      authorized_key:
+        user: root
+        state: present
+        key: '{{ item }}'
+      with_file:
+        - /root/vmware/config/data/desktop_pub_key
