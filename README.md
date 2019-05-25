@@ -1,4 +1,4 @@
-## Creating kubernetes cluster with Terraform and Ansible on vmware vsphere
+## Creating kubernetes cluster with Terraform and Ansible on vmware vsphere 6.7
 ## Prerequisites:
 Create one Centos 7 vm
 After creation is finished, login and do the following:
