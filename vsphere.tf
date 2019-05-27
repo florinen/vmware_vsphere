@@ -165,7 +165,7 @@ resource "vsphere_virtual_machine" "worker" {
   }
 # Copy host SSH pub key to remote hosts
   connection {
-    host     = "${sefl.network_interface.0.ipv4_address}"
+    host     = "${vsphere_virtual_machine.worker.*.ipv4_address}"
     type     = "ssh"
     user     = "${var.vm_admin_user}"
     password = "${var.vm_admin_password}"
