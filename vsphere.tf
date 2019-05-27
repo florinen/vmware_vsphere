@@ -112,7 +112,7 @@ resource "vsphere_virtual_machine" "master" {
     password = "${var.vm_admin_password}"
   }
   provisioner "file" {
-    source      = "${var.ssh_keys}"
+    source      = "${file("~/.ssh/id_rsa.pub")}"
     destination = "/root/.ssh/authorized_keys"
   }
 }
@@ -164,18 +164,19 @@ resource "vsphere_virtual_machine" "worker" {
     }
   }
 # Copy host SSH pub key to remote hosts
-  
-
-  provisioner "file" {
-    source      = "${var.ssh_keys}"
-    destination = "/root/.ssh/authorized_keys"
-  }
+ 
   connection {
     host     = "${lookup(var.vm_worker_ips, count.index)}"
     type     = "ssh"
     user     = "${var.vm_admin_user}"
     password = "${var.vm_admin_password}"
   }
+
+  provisioner "file" {
+    source      = "${var.ssh_keys}"
+    destination = "/root/.ssh/authorized_keys"
+  }
+  
   
 }
 # Create anti affinity rule for the Kubernetes master VMs #
