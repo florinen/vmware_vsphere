@@ -77,7 +77,7 @@ resource "vsphere_virtual_machine" "master" {
 
   disk {
     label            = "${var.vm_name_prefix}-master-${count.index}.vmdk"
-    size             = "${data.vsphere_virtual_machine.template.disk.0.size}"
+    size             = "${data.vsphere_virtual_machine.template.disks.0.size}"
     eagerly_scrub    = "${data.vsphere_virtual_machine.template.disks.0.eagerly_scrub}"
     thin_provisioned = "${data.vsphere_virtual_machine.template.disks.0.thin_provisioned}"
   }
