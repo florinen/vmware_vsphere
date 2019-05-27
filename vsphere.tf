@@ -115,18 +115,6 @@ resource "vsphere_virtual_machine" "master" {
     destination = "/root/.ssh/authorized_keys"
   }
 }
-  
-
-# Create anti affinity rule for the Kubernetes master VMs #
-resource "vsphere_compute_cluster_vm_anti_affinity_rule" "master_anti_affinity_rule" {
-  count               = "${var.vsphere_enable_anti_affinity == "true" ? 1 : 0}"
-  name                = "${var.vm_name_prefix}-master-anti-affinity-rule"
-  compute_cluster_id  = "${data.vsphere_compute_cluster.cluster.id}"
-  virtual_machine_ids = ["${vsphere_virtual_machine.master.*.id}"]
-
-  depends_on = ["vsphere_virtual_machine.master"]
-}
-
 
 # Create the Kubernetes worker VMs #
 resource "vsphere_virtual_machine" "worker" {
@@ -186,4 +174,13 @@ resource "vsphere_virtual_machine" "worker" {
     destination = "/root/.ssh/authorized_keys"
   }
   
+}
+# Create anti affinity rule for the Kubernetes master VMs #
+resource "vsphere_compute_cluster_vm_anti_affinity_rule" "master_anti_affinity_rule" {
+  count               = "${var.vsphere_enable_anti_affinity == "true" ? 1 : 0}"
+  name                = "${var.vm_name_prefix}-master-anti-affinity-rule"
+  compute_cluster_id  = "${data.vsphere_compute_cluster.cluster.id}"
+  virtual_machine_ids = ["${vsphere_virtual_machine.master.*.id}"]
+
+  depends_on = ["vsphere_virtual_machine.master"]
 }

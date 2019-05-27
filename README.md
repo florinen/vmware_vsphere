@@ -1,4 +1,4 @@
-## Creating kubernetes cluster with Terraform and Ansible on vmware vsphere
+## Creating kubernetes cluster with Terraform and Ansible on vmware vsphere 6.7
 ## Prerequisites:
 Create one Centos 7 vm
 After creation is finished, login and do the following:
@@ -46,6 +46,12 @@ Remove the propagation of the permission. Could be done at the cluster datastore
 Create a directory for the vSphere Cloud Provider, This folder will store the virtual disks created by the vSphere Cloud Provider. (optionally) 
 
 # To run terraform and ansible execute the folowing script:
-  
+
+Before you execute script make sure you set env
+```
+  - export AWS_SECRET_ACCESS_KEY=your secret key here
+  - export AWS_ACCESS_KEY_ID=your access key here
+```  
   - chmod +x install_cluster.sh         # if script is not executable, make it with this cmd
-  - ./install_cluster.sh                # executing this script will installl kubernetes cluster.
+  - ./install_cluster.sh                # executing this script will installl kubernetes cluster
+```
