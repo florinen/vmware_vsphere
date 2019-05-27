@@ -106,13 +106,12 @@ resource "vsphere_virtual_machine" "master" {
   }
   # Copy host SSH pub key to remote hosts
   connection {
-    host     = "${vsphere_virtual_machine.master[count.index]"
     type     = "ssh"
     user     = "${var.vm_admin_user}"
     password = "${var.vm_admin_password}"
   }
   provisioner "file" {
-    source      = "${file("~/.ssh/id_rsa.pub")}"
+    source      = "${var.ssh_keys}"
     destination = "/root/.ssh/authorized_keys"
   }
 }
@@ -165,7 +164,6 @@ resource "vsphere_virtual_machine" "worker" {
   }
 # Copy host SSH pub key to remote hosts
   connection {
-    host     = "${vsphere_virtual_machine.worker[count.index]}"
     type     = "ssh"
     user     = "${var.vm_admin_user}"
     password = "${var.vm_admin_password}"
