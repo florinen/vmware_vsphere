@@ -155,7 +155,7 @@ resource "vsphere_virtual_machine" "worker" {
       }
 
       network_interface {
-        ipv4_address = "${lookup(var.vm_worker_ips, count.index)}"
+        ipv4_address = "${lookup(var.vm_worker_ips)}"
         ipv4_netmask = "${var.vm_netmask}"
       }
 
