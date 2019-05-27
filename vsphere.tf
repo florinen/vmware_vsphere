@@ -171,7 +171,7 @@ resource "vsphere_virtual_machine" "worker" {
     destination = "/root/.ssh/authorized_keys"
   }
   connection {
-    host     = "${var.vm_worker_ips, count.index}"
+    host     = "${lookup(var.vm_worker_ips, count.index)}"
     type     = "ssh"
     user     = "${var.vm_admin_user}"
     password = "${var.vm_admin_password}"
