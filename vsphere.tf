@@ -155,7 +155,7 @@ resource "vsphere_virtual_machine" "worker" {
       }
 
       network_interface {
-        ipv4_address = "${lookup(var.vm_worker_ips)}"
+        ipv4_address = "${lookup(var.vm_worker_ips, count.index)}"
         ipv4_netmask = "${var.vm_netmask}"
       }
 
@@ -164,16 +164,17 @@ resource "vsphere_virtual_machine" "worker" {
     }
   }
 # Copy host SSH pub key to remote hosts
+  
+
+  provisioner "file" {
+    source      = "${var.ssh_keys}"
+    destination = "/root/.ssh/authorized_keys"
+  }
   connection {
     host     = "${vsphere_virtual_machine.worker.*.ipv4_address}"
     type     = "ssh"
     user     = "${var.vm_admin_user}"
     password = "${var.vm_admin_password}"
-  }
-
-  provisioner "file" {
-    source      = "${var.ssh_keys}"
-    destination = "/root/.ssh/authorized_keys"
   }
   
 }
