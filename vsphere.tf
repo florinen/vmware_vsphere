@@ -165,6 +165,7 @@ resource "vsphere_virtual_machine" "worker" {
   }
 # Copy host SSH pub key to remote hosts
   connection {
+    host     = "${vsphere_virtual_machine.worker.*.vm_worker_ips}"
     type     = "ssh"
     user     = "${var.vm_admin_user}"
     password = "${var.vm_admin_password}"
