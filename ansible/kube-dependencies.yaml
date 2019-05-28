@@ -19,10 +19,11 @@
       command: setenforce 0
       ignore_errors: true
      
-    - name: disable SELinux on reboot
+    - name: disable SELinux
       selinux:
         state: disabled
       ignore_errors: true
+      register: selinuxdisabled
        
     - name: Stop and disable firewalld. # Conflicts with iptables
       service:
@@ -43,6 +44,7 @@
         replace: '#\1'
 
     - name: Rebooting ...
+      when: selinuxdisabled.changed
       shell: "sleep 3 && reboot"
       async: 1
       poll: 0
