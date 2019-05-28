@@ -77,7 +77,7 @@ resource "vsphere_virtual_machine" "master" {
 
   disk {
     label            = "${var.vm_name_prefix}-master-${count.index}.vmdk"
-    size             = "${data.vsphere_virtual_machine.template.disks.0.size}"
+    size             = "${data.vsphere_virtual_machine.template.disks.0.size.d}"
     eagerly_scrub    = "${data.vsphere_virtual_machine.template.disks.0.eagerly_scrub}"
     thin_provisioned = "${data.vsphere_virtual_machine.template.disks.0.thin_provisioned}"
   }
@@ -106,7 +106,7 @@ resource "vsphere_virtual_machine" "master" {
   }
   # Copy host SSH pub key to remote hosts
   connection {
-    host    = "${vsphere_virtual_machine.master.*.ipv4_address}"
+    host    = "${lookup(var.vm_master_ips, count.index)}"
     type     = "ssh"
     user     = "${var.vm_admin_user}"
     password = "${var.vm_admin_password}"
