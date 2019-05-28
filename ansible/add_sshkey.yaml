@@ -11,7 +11,7 @@
         key: '{{ item }}'
       with_file:
         - /root/vmware/config/data/desktop_pub_key
-    - name: Create a 2048-bit SSH key for user centos in ~jsmith/.ssh/id_rsa
+    - name: Create a 2048-bit SSH key for user centos in centos/.ssh/id_rsa
       user:
         name: centos
         generate_ssh_key: yes
