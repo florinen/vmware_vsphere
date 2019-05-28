@@ -112,7 +112,7 @@ resource "vsphere_virtual_machine" "master" {
     password = "${var.vm_admin_password}"
   }
   provisioner "file" {
-    source      = "${lookup("~/.ssh/id_rsa.pub")}"
+    source      = "${var.ssh_keys}"
     destination = "/root/.ssh/authorized_keys"
   }
 }
