@@ -62,9 +62,9 @@
       blockinfile:
         path: /etc/hosts
         block: |
-          k8s-master-0  10.10.40.15
-          k8s-worker-0  10.10.40.16
-          k8s-worker-1  10.10.40.17
+          k8s-master-0  10.10.45.15
+          k8s-worker-0  10.10.45.16
+          k8s-worker-1  10.10.45.17
 
     - name: Add Docker repository
       get_url:
