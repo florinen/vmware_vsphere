@@ -7,5 +7,6 @@
       ignore_errors: true
     - name: reset confirmation
       vars_prompt:
+        name: "reset_confirmation"
         prompt: "Are you sure you want to reset cluster state? Type 'yes' to reset your cluster."
         default: "no"
