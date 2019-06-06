@@ -26,7 +26,7 @@
       file:
         path: /home/centos/.kube
         state: directory
-        mode: 0755
+        mode: 0750
 
     - name: copy admin.conf to user's kube config
       copy:
