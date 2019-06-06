@@ -8,7 +8,7 @@
       ignore_errors: true
       register: stdout
     - debug: 
-        msg: "{{ stdout }}"" 
+        msg: stdout 
 
     - name: reset iptables
       shell: >
