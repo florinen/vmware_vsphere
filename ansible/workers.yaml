@@ -1,7 +1,7 @@
 - hosts: master
   become: yes
   become_method: sudo
-  gather_facts: false
+  gather_facts: no
   tasks:
     - name: get join command
       shell: 'kubeadm token create --print-join-command'
