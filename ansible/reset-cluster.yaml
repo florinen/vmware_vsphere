@@ -8,6 +8,11 @@
       ignore_errors: true
       register: result
     - debug: var=results.changed 
+    - name: restart daemon and docker
+      systemd:
+        daemon_reload: yes
+        name: docker
+        state: restarted
   vars_prompt:
     name: "reset_confirmation"
     prompt: "Are you sure you want to reset cluster state? Type 'yes' to reset your cluster."
@@ -24,8 +29,4 @@
      # register: result  
     #- debug: var=results.changed
 
-    - name: restart daemon and docker
-      systemd:
-        daemon_reload: yes
-        name: docker
-        state: restarted
+   
