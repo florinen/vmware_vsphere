@@ -10,11 +10,10 @@
     - debug: 
         msg: stdout 
 
-    - name: reset iptables
-      iptables_raw:
-        name: '*'
-        table: '*'
-        state: absent
+  iptables_raw:
+    name: '*'
+    table: '*'
+    state: absent
 
     - name: restart daemon and docker
       systemd:
