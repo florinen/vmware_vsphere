@@ -1,4 +1,4 @@
-- hosts: worker
+- hosts: workers
   become: yes
   become_method: sudo
   tasks:
