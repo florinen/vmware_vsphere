@@ -10,15 +10,19 @@
     - debug: 
         msg: stdout 
 
-    - name: reset iptables
-      shell: >
-        "iptables -F"  
-        "iptables -t nat -F" 
-        "iptables -t mangle -F" 
-        "iptables -X"
-      register: stdout
-      ignore_errors: true
-          
+    - name: iptables flush filter
+      iptables:
+        chain: "{{ item }}"
+        flush: yes
+      with_items:  [ 'INPUT', 'FORWARD', 'OUTPUT' ]
+
+    - name: iptables flush nat
+      iptables:
+        table: nat
+        chain: '{{ item }}'
+        flush: yes
+      with_items: [ 'INPUT', 'OUTPUT', 'PREROUTING', 'POSTROUTING' ]     
+    
     - name: restart daemon and docker
       systemd:
         daemon_reload: yes
