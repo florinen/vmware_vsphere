@@ -6,15 +6,17 @@
     - name: reset cluster
       shell: kubeadm reset --force
       ignore_errors: true
-      register: result
-    - debug: var=results.changed 
+      register: stdout
+    - debug: 
+        msg: "{{ stdout }}"" 
 
     - name: reset iptables
-      shell: |
+      shell: >
         "iptables -F"  
         "iptables -t nat -F" 
         "iptables -t mangle -F" 
         "iptables -X"
+      register: stdout
       ignore_errors: true
           
     - name: restart daemon and docker
