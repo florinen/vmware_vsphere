@@ -62,7 +62,8 @@
       blockinfile:
         path: /etc/hosts
         block: |
-          k8s-master-0  10.10.45.15
+          k8s-master-0  10.10.45.14
+          k8s-master-1  10.10.45.15
           k8s-worker-0  10.10.45.16
           k8s-worker-1  10.10.45.17
 
