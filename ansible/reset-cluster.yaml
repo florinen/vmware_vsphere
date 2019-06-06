@@ -11,10 +11,10 @@
 
     - name: reset iptables
       shell: |
-        iptables -F  
-        iptables -t nat -F 
-        iptables -t mangle -F 
-        iptables -X"
+        "iptables -F"  
+        "iptables -t nat -F" 
+        "iptables -t mangle -F" 
+        "iptables -X"
       register: result  
     - debug: var=results.changed
     
