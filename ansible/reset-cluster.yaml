@@ -6,9 +6,6 @@
     - name: reset cluster
       shell: kubeadm reset --force
       ignore_errors: true
-      register: stdout
-    - debug: 
-        msg: stdout 
 
     - name: Reset iptables to blank slate
       command: "{{item}}"
@@ -34,7 +31,6 @@
 #        "iptables -t nat -F" 
 #        "iptables -t mangle -F" 
 #        "iptables -X"
-#      register: stdout
 #      ignore_errors: true
 
    
