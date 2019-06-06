@@ -8,12 +8,8 @@
       ignore_errors: true
 
     - name: reset iptables
-      shell: >
-        'iptables -F'  
-        'iptables -t nat -F' 
-        'iptables -t mangle -F' 
-        'iptables -X'
-          
+      shell: 'iptables -F'
+                 
     - name: restart daemon and docker
       systemd:
         daemon_reload: yes
