@@ -10,19 +10,12 @@
     - debug: 
         msg: stdout 
 
-    - name: iptables flush filter
-      iptables:
-        chain: "{{ item }}"
-        flush: yes
-      with_items:  [ 'INPUT', 'FORWARD', 'OUTPUT' ]
+    - name: reset iptables
+      iptables_raw:
+        name: '*'
+        table: '*'
+        state: absent
 
-    - name: iptables flush nat
-      iptables:
-        table: nat
-        chain: '{{ item }}'
-        flush: yes
-      with_items: [ 'INPUT', 'OUTPUT', 'PREROUTING', 'POSTROUTING' ]     
-    
     - name: restart daemon and docker
       systemd:
         daemon_reload: yes
