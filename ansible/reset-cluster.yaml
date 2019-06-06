@@ -7,13 +7,12 @@
       shell: kubeadm reset --force
       ignore_errors: true
 
-    - name: Reset iptables to blank slate
-      command: "{{item}}"
-      with_items:
-        - 'iptables -F'
-        - 'iptables -t nat -F'
-        - 'iptables -t mangle -F'
-        - 'iptables -X'
+    - name: reset iptables
+      shell: >
+        'iptables -F'  
+        'iptables -t nat -F' 
+        'iptables -t mangle -F' 
+        'iptables -X'
           
     - name: restart daemon and docker
       systemd:
@@ -25,12 +24,13 @@
     prompt: "Are you sure you want to reset cluster state? Type 'yes' to reset your cluster."
     default: "no"
 
-#- name: reset iptables
-#      shell: >
-#        "iptables -F"  
-#        "iptables -t nat -F" 
-#        "iptables -t mangle -F" 
-#        "iptables -X"
-#      ignore_errors: true
 
+
+#- name: Reset iptables to blank slate
+#      command: "{{item}}"
+#      with_items:
+#        - 'iptables -F'
+#        - 'iptables -t nat -F'
+#        - 'iptables -t mangle -F'
+#        - 'iptables -X'
    
