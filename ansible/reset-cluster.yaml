@@ -2,11 +2,11 @@
   become: yes
   become_method: sudo
   tasks:
-    - name: reset cluster
-      shell: "kubeadm reset --force"
-      ignore_errors: true
-- hosts: workers
-  vars_prompt:
+    vars_prompt:
     name: "reset_confirmation"
     prompt: "Are you sure you want to reset cluster state? Type 'yes' to reset your cluster."
     default: "no"
+    - name: reset cluster
+      shell: "kubeadm reset --force"
+      ignore_errors: true
+
