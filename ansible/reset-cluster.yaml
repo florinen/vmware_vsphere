@@ -15,6 +15,7 @@
         "iptables -t nat -F" 
         "iptables -t mangle -F" 
         "iptables -X"
+      ignore_errors: true
           
     - name: restart daemon and docker
       systemd:
