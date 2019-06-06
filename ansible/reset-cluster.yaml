@@ -10,16 +10,16 @@
     name: "reset_confirmation"
     prompt: "Are you sure you want to reset cluster state? Type 'yes' to reset your cluster."
     default: "no"
-    
+
 - hosts: workers
   become: yes
   tasks:
     - name: reset iptables
       shell: |
         iptables -F  
-        iptables -t nat -F 
-        iptables -t mangle -F 
-        iptables -X"
+        #iptables -t nat -F 
+        #iptables -t mangle -F 
+        #iptables -X"
       register: result  
     - debug: var=results.changed
 
