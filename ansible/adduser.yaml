@@ -6,8 +6,8 @@
   tasks:
     - name: Add the user 'centos' with a bash shell
       user:
-        name: centos
-        comment: centos
+        name: "{{user}}"
+        comment: "{{comment}}"
         shell: /bin/bash
         #password: centos
         #groups: 
@@ -15,8 +15,8 @@
       register: new_user
     - name: Set authorized key took from root user
       authorized_key:
-        user: centos
-        state: absent
+        user: "{{user}}"
+        state: present
         key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
         manage_dir: yes
     #- name: Set authorized key taken from file
