@@ -9,8 +9,8 @@
         name: florinen
         comment: kubernetes user
         shell: /bin/bash
-        #password: centos
-        #groups: 
+        #password: 
+        groups: sudo
         append: yes
       register: new_user
     - name: Create a 2048-bit SSH key for user florinen 
