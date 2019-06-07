@@ -22,9 +22,9 @@
     - name: add user to sudoers
       lineinfile:
         path: /etc/sudoers
-        insertafter: '%wheel '
+        insertafter: '# %wheel '
         line: 'florinen  ALL=(ALL)       NOPASSWD: ALL'
-        state: present
+        state: absent
     - name: Set authorized key took from root user
       authorized_key:
         user: florinen
