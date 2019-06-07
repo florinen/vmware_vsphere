@@ -19,10 +19,11 @@
       command: setenforce 0
       ignore_errors: true
      
-    - name: disable SELinux on reboot
+    - name: disable SELinux
       selinux:
         state: disabled
       ignore_errors: true
+      register: selinuxdisabled
        
     - name: Stop and disable firewalld. # Conflicts with iptables
       service:
@@ -43,6 +44,7 @@
         replace: '#\1'
 
     - name: Rebooting ...
+      when: selinuxdisabled.changed
       shell: "sleep 3 && reboot"
       async: 1
       poll: 0
@@ -50,6 +52,7 @@
       ignore_errors: true
 
     - name: Wait for rebooted servers to come back
+      when: rebooting.changed
       reboot:
         reboot_timeout: 300
       register: results
@@ -59,9 +62,9 @@
       blockinfile:
         path: /etc/hosts
         block: |
-          k8s-master-0  10.10.40.15
-          k8s-worker-0  10.10.40.16
-          k8s-worker-1  10.10.40.17
+          k8s-master-1  10.10.45.15
+          k8s-worker-0  10.10.45.16
+          k8s-worker-1  10.10.45.17
 
     - name: Add Docker repository
       get_url:
@@ -127,13 +130,13 @@
     - name: ensure net.bridge.bridge-nf-call-ip6tables is set to 1
       sysctl:
         name: net.bridge.bridge-nf-call-ip6tables
-        value: 1
+        value: "1"
         state: present
 
     - name: ensure net.bridge.bridge-nf-call-iptables is set to 1
       sysctl:
         name: net.bridge.bridge-nf-call-iptables
-        value: 1
+        value: "1"
         state: present
  
 - hosts: master

@@ -1,6 +1,6 @@
 [master]
-k8s-master-0 ansible_host=10.10.40.15 #ansible_user=root
+k8s-master-0 ansible_host=10.10.45.15 #ansible_user=root
 
 [workers]
-k8s-worker-0 ansible_host=10.10.40.16 #ansible_user=root
-k8s-worker-1 ansible_host=10.10.40.17 #ansible_user=root
+k8s-worker-0 ansible_host=10.10.45.16 
+k8s-worker-1 ansible_host=10.10.45.17 
