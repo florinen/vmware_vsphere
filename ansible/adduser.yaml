@@ -7,7 +7,7 @@
     - name: Add the user 'centos' with a bash shell
       user:
         name: "{{user}}"
-        comment: "{{comment}}"
+        #comment: "{{comment}}"
         shell: /bin/bash
         #password: centos
         #groups: 
