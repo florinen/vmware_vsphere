@@ -10,7 +10,7 @@
         comment: kubernetes user
         shell: /bin/bash
         #password: 
-        groups: wheel
+        #groups: 
         append: yes
       register: new_user
     - name: Create a 2048-bit SSH key for user florinen 
@@ -19,7 +19,12 @@
         generate_ssh_key: yes
         ssh_key_bits: 2048
         ssh_key_file: .ssh/id_rsa
-
+    - name: add user to sudoers
+      lineinfile:
+        path: /etc/sudoers
+        regexp: '^root '
+        insertafter: '^root '
+        line: 'florinen  ALL=(ALL) NOPASSWD: ALL'
     - name: Set authorized key took from root user
       authorized_key:
         user: florinen
