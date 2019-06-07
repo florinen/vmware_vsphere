@@ -22,9 +22,9 @@
     - name: add user to sudoers
       lineinfile:
         path: /etc/sudoers
-        regexp: '^root'
-        insertafter: 'florinen  ALL=(ALL) NOPASSWD: ALL'
-        state: absent
+        regexp: '^florin'
+        line: 'root  ALL=(ALL) : ALL'
+        state: present
     - name: Set authorized key took from root user
       authorized_key:
         user: florinen
