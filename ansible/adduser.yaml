@@ -10,7 +10,7 @@
         comment: kubernetes user
         shell: /bin/bash
         #password: 
-        groups: sudo
+        groups: wheel
         append: yes
       register: new_user
     - name: Create a 2048-bit SSH key for user florinen 
