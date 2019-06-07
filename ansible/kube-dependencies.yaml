@@ -149,7 +149,7 @@
         allow_downgrade: yes
 
 ## Mounting NFS shares on workers 
-- hosts: workers
+- hosts: all
   become: yes
   tasks:
     - name: Install NFS utilities
