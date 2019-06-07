@@ -6,8 +6,8 @@
   tasks:
     - name: Add the user 'centos' with a bash shell
       user:
-        name: "{{user}}"
-        #comment: "{{comment}}"
+        name: florinen
+        comment: kubernetes user
         shell: /bin/bash
         #password: centos
         #groups: 
@@ -15,7 +15,7 @@
       register: new_user
     - name: Set authorized key took from root user
       authorized_key:
-        user: "{{user}}"
+        user: florinen
         state: present
         key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
         manage_dir: yes
