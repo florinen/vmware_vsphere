@@ -22,22 +22,22 @@
 
     - name: create .kube directory
       become: yes
-      become_user: "{{ user }}"
+      become_user: centos
       file:
-        path: /home/"{{user}}"/.kube
+        path: /home/centos/.kube
         state: directory
         mode: 0755
 
     - name: copy admin.conf to user's kube config
       copy:
         src: /etc/kubernetes/admin.conf
-        dest: /home/"{{user}}"/.kube/config
+        dest: /home/centos/.kube/config
         remote_src: yes
-        owner: "{{ user }}"
+        owner: centos
 
     - name: install Pod network
       become: yes
-      become_user: "{{ user }}"
+      become_user: centos
       shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml >> pod_network_setup.txt
       args:
         chdir: $HOME
