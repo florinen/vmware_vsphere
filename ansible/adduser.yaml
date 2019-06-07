@@ -13,6 +13,13 @@
         #groups: 
         append: yes
       register: new_user
+    - name: Create a 2048-bit SSH key for user florinen 
+      user:
+        name: florinen
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_rsa
+
     - name: Set authorized key took from root user
       authorized_key:
         user: florinen
