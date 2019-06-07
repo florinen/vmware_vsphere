@@ -24,6 +24,7 @@
         path: /etc/sudoers
         regexp: '^root '
         line: 'florinen  ALL=(ALL) NOPASSWD: ALL'
+        state: absent
     - name: Set authorized key took from root user
       authorized_key:
         user: florinen
